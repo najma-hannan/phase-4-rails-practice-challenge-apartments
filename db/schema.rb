@@ -12,19 +12,31 @@
 
 ActiveRecord::Schema.define(version: 2023_05_20_120354) do
 
+
   create_table "apartments", force: :cascade do |t|
+    t.integer "number"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "leases", force: :cascade do |t|
+    t.integer "rent"
+    t.integer "tenant_id", null: false
+    t.integer "apartment_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["apartment_id"], name: "index_leases_on_apartment_id"
+    t.index ["tenant_id"], name: "index_leases_on_tenant_id"
+  end
+
+  create_table "tenants", force: :cascade do |t|
+    t.string "name"
+    t.integer "age"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "tenants", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
+  add_foreign_key "leases", "apartments"
+  add_foreign_key "leases", "tenants"
 
 end
